@@ -1,0 +1,19 @@
+# tunable
+fliplr: 0.0               # Horizontal flip probability
+hsv_s: 0.7                # Saturation augmentation
+hsv_v: 0.4                # Value (brightness) augmentation
+translate: 0.1            # Translation as a fraction of image size
+scale: 0.5                # Scale gain factor
+mosaic: 1.0               # Mosaic augmentation
+hsv_h: 0.015              # Hue augmentation
+
+# don't touch
+perspective: 0.0          # Perspective transform probability
+shear: 0.0                # Shear in degrees
+flipud: 0.0               # Vertical flip probability
+mixup: 0.0                # MixUp augmentation
+copy_paste: 0.0           # Copy-paste augmentation (for segmentation)
+auto_augment: 'randaugment'  # Classification auto-augment strategy
+erasing: 0.0              # Random erasing probability (for classification)
+crop_fraction: 1.0        # Image crop fraction (for classification)
+degrees: 0.0              # Rotation in degrees

@@ -1,0 +1,10 @@
+runs/
+2025/runs/
+2025/results*
+Yolo-FastestV2/
+Yolo-FastestV2
+*.env
+
+__pycache__/
+
+bfmc_data

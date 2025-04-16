@@ -9,7 +9,7 @@ from scipy.stats import truncnorm
 from tqdm import tqdm
 from pathlib import Path
 
-repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+repo_path = Path(__file__).resolve().parent.parent
 
 def get_image_files(folder):
     exts = ["*.jpg", "*.jpeg", "*.png", "*.bmp", "*.gif", "*.tiff"]
@@ -21,93 +21,102 @@ def get_image_files(folder):
 CLASS_NAMES = ["oneway", "highwayentrance", "stopsign", "roundabout", "park",
                "crosswalk", "noentry", "highwayexit", "prio", "light",
                "roadblock", "girl", "cars2"]
+CLASS_MEANS = [80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+               300, 100, 80]
+CLASS_STDS = [60, 60, 60, 60, 60, 60, 60, 60, 60, 60,
+               60, 60, 60]
+CLASS_MIN_WIDTHS = [12, 12, 12, 12, 12, 12, 12, 12, 12, 37,
+                    36, 30, 24]
+CLASS_MAX_WIDTHS = [270, 270, 270, 270, 270, 270, 270, 270, 270, 280,
+                    810, 320, 320]
+ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+       10]
+for id in ids:
+    input_folder = repo_path / "bfmc_data" / "generated" / "crop_augmented" / CLASS_NAMES[id]
+    output_folder = repo_path / "bfmc_data" / "generated" / "crop_augmented_resized" / str(id)
 
-id = 5
-input_folder = repo_path / "bfmc_data" / "generated" / "crop_augmented" / CLASS_NAMES[id]
-output_folder = repo_path / "bfmc_data" / "generated" / "crop_augmented_resized" / str(id)
+    mean_val = CLASS_MEANS[id]
+    std_val = CLASS_STDS[id]
 
-mean_val = 100
-std_val = 60
+    lower_bound = CLASS_MIN_WIDTHS[id]
+    upper_bound = CLASS_MAX_WIDTHS[id]
 
-lower_bound = 12
-upper_bound = 270
+    a = (lower_bound - mean_val) / std_val
+    b = (upper_bound - mean_val) / std_val
 
-a = (lower_bound - mean_val) / std_val
-b = (upper_bound - mean_val) / std_val
+    os.makedirs(output_folder, exist_ok=True)
 
-os.makedirs(output_folder, exist_ok=True)
+    image_files = get_image_files(input_folder)
+    if not image_files:
+        print("No images found in:", input_folder)
+        sys.exit(1)
 
-image_files = get_image_files(input_folder)
-if not image_files:
-    print("No images found in:", input_folder)
-    sys.exit(1)
-
-images_info = []
-for filepath in image_files:
-    try:
-        with Image.open(filepath) as im:
-            w, h = im.size
-        images_info.append({"path": filepath, "width": w, "height": h})
-    except Exception as e:
-        print(f"Could not open {filepath}: {e}")
-
-if not images_info:
-    print("No valid images found!")
-    sys.exit(1)
-
-images_info.sort(key=lambda x: x["width"])
-n = len(images_info)
-print(f"Processing {n} images...")
-
-for i, info in enumerate(tqdm(images_info, desc="Resizing images", unit="img")):
-    orig_width = info["width"]
-    orig_height = info["height"]
-
-    p = (i + 0.5) / n
-
-    target_width = truncnorm.ppf(p, a, b, loc=mean_val, scale=std_val)
-    
-    target_w = int(round(target_width))
-    if target_w > orig_width:
-        target_w = orig_width
-
-    scale = target_w / orig_width
-    target_h = int(round(orig_height * scale))
-    
-    try:
-        with Image.open(info["path"]) as im:
-            im_resized = im.resize((target_w, target_h), Image.LANCZOS)
-            base_name = os.path.basename(info["path"])
-            output_path = os.path.join(output_folder, base_name)
-            im_resized.save(output_path)
-            # print(f"Processed {base_name}: original {orig_width}x{orig_height}, target {target_w}x{target_h}")
-    except Exception as e:
-        print(f"Failed to process {info['path']}: {e}")
-
-print("All images have been processed and saved in:", output_folder)
-
-resized_widths = []
-for file in os.listdir(output_folder):
-    if file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
+    images_info = []
+    for filepath in image_files:
         try:
-            with Image.open(os.path.join(output_folder, file)) as img:
-                width, _ = img.size
-                resized_widths.append(width)
+            with Image.open(filepath) as im:
+                w, h = im.size
+            images_info.append({"path": filepath, "width": w, "height": h})
         except Exception as e:
-            print(f"Error reading {file}: {e}")
+            print(f"Could not open {filepath}: {e}")
 
-if resized_widths:
-    print("\n=== Resized Image Stats ===")
-    print(f"Total resized images: {len(resized_widths)}")
-    print(f"Min width     : {min(resized_widths)} px")
-    print(f"Max width     : {max(resized_widths)} px")
-    print(f"Mean width    : {np.mean(resized_widths):.2f} px")
-    print(f"Std deviation : {np.std(resized_widths):.2f} px")
-    
-    hist, edges = np.histogram(resized_widths, bins=np.arange(min(resized_widths), max(resized_widths)+11, 10))
-    print("\nWidth histogram (10 px bins):")
-    for count, edge_start, edge_end in zip(hist, edges[:-1], edges[1:]):
-        percentage = (count / sum(hist)) * 100
-        print(f"{int(edge_start):4d}-{int(edge_end - 1):4d} px: {percentage:6.2f}%")
-else:
-    print("No resized images found to analyze.")
+    if not images_info:
+        print("No valid images found!")
+        sys.exit(1)
+
+    images_info.sort(key=lambda x: x["width"])
+    n = len(images_info)
+    print(f"Processing {n} images...")
+
+    for i, info in enumerate(tqdm(images_info, desc="Resizing images", unit="img")):
+        orig_width = info["width"]
+        orig_height = info["height"]
+
+        p = (i + 0.5) / n
+
+        target_width = truncnorm.ppf(p, a, b, loc=mean_val, scale=std_val)
+        
+        target_w = int(round(target_width))
+        if target_w > orig_width:
+            target_w = orig_width
+
+        scale = target_w / orig_width
+        target_h = int(round(orig_height * scale))
+        
+        try:
+            with Image.open(info["path"]) as im:
+                im_resized = im.resize((target_w, target_h), Image.LANCZOS)
+                new_name = str(i+1) + ".jpg"
+                output_path = os.path.join(output_folder, new_name)
+                im_resized.save(output_path)
+                # print(f"Processed {base_name}: original {orig_width}x{orig_height}, target {target_w}x{target_h}")
+        except Exception as e:
+            print(f"Failed to process {info['path']}: {e}")
+
+    print("All images have been processed and saved in:", output_folder)
+
+    resized_widths = []
+    for file in os.listdir(output_folder):
+        if file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
+            try:
+                with Image.open(os.path.join(output_folder, file)) as img:
+                    width, _ = img.size
+                    resized_widths.append(width)
+            except Exception as e:
+                print(f"Error reading {file}: {e}")
+
+    if resized_widths:
+        print("\n=== Resized Image Stats ===")
+        print(f"Total resized images: {len(resized_widths)}")
+        print(f"Min width     : {min(resized_widths)} px")
+        print(f"Max width     : {max(resized_widths)} px")
+        print(f"Mean width    : {np.mean(resized_widths):.2f} px")
+        print(f"Std deviation : {np.std(resized_widths):.2f} px")
+        
+        hist, edges = np.histogram(resized_widths, bins=np.arange(min(resized_widths), max(resized_widths)+11, 10))
+        print("\nWidth histogram (10 px bins):")
+        for count, edge_start, edge_end in zip(hist, edges[:-1], edges[1:]):
+            percentage = (count / sum(hist)) * 100
+            print(f"{int(edge_start):4d}-{int(edge_end - 1):4d} px: {percentage:6.2f}%")
+    else:
+        print("No resized images found to analyze.")

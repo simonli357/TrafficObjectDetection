@@ -62,7 +62,8 @@ def show_images(images, start_index):
     if len(images) == 0:
         return 0
 
-    resized_images = [cv2.resize(img, (176, 176)) for img in images]
+    # resized_images = [cv2.resize(img, (176, 176)) for img in images]
+    resized_images = [cv2.resize(img, (240, 240)) for img in images]
 
     grid_rows = 4
     grid_cols = 8
@@ -96,7 +97,7 @@ def show_images(images, start_index):
         elif key == ord('q'):
             return 0
 
-base_path = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_g")
+base_path = os.path.join(repo_path, "bfmc_data", "generated", "datasets_c")
 image_folder = os.path.join(base_path, "images")
 label_folder = os.path.join(base_path, "labels")
 

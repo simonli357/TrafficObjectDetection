@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 import yaml
 from pathlib import Path
 
-repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+repo_path = Path(__file__).resolve().parent.parent
 
 # --- CONFIGURATION ---
-weights_dir = repo_path / "training" / "runs" / "core_noflip313" / "weights"
+weights_dir = repo_path / "training" / "runs" / "core041513" / "weights"
 yaml_path = repo_path / "config" / "train_config.yaml"
 with open(yaml_path, 'r') as f:
     config = yaml.safe_load(f)

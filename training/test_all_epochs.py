@@ -7,7 +7,7 @@ from pathlib import Path
 repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 # --- CONFIGURATION ---
-model_dir = os.path.join(repo_path, "training", "runs", "core_noflip313", "weights")
+model_dir = os.path.join(repo_path, "training", "runs", "core_allxd13", "weights")
 yaml_path = os.path.join(repo_path, "config", "train_config.yaml")
 
 device = 0  # or 'cuda:0'
@@ -18,7 +18,7 @@ class_names = config['names']
 num_classes = len(class_names)
 # test: /home/slsecret/Downloads/bfmc_data/TestSetAll/
 # get the last part of the path
-testset_name = config['test'].split('/')[-2]
+testset_name = config['test'].split('/')[-1]
 print(f"Testset name: {testset_name}")
 os.makedirs(os.path.join(model_dir, "metrics_"+testset_name), exist_ok=True)
 

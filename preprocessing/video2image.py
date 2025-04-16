@@ -6,6 +6,8 @@ from pathlib import Path
 
 repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
+random.seed(357)
+
 def get_random_bg_crop(bg_folder, target_width, pad_height):
     bg_files = [f for f in os.listdir(bg_folder) if f.lower().endswith(('.jpg', '.png', '.jpeg'))]
     if not bg_files:

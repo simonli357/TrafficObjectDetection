@@ -7,6 +7,9 @@ import os
 
 repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
+random.seed(357)
+np.random.seed(357)
+
 BASE_SIZE = 200  # base image size for which original parameters were tuned
 
 def get_scale_factor(image, base_size=BASE_SIZE):
@@ -118,12 +121,13 @@ def strong_color_shift(image, path):
         'crosswalk': 'blue',
         'oneway': 'blue',
         'roundabout': 'blue',
-        'parking': 'blue',
+        'park': 'blue',
         'stopsign': 'red',
         'noentry': 'red',
         'highwayentrance': 'green',
         'highwayexit': 'green',
-        'prio': 'yellow'
+        'prio': 'yellow',
+        'roadblock': 'red'
     }
     
     path_lower = path.lower()

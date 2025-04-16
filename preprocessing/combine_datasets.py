@@ -3,23 +3,19 @@ import shutil
 import yaml
 from pathlib import Path
 from tqdm import tqdm
-repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+repo_path = Path(__file__).resolve().parent.parent
 
 datasets = [
     'datasets_city',
     'datasets_a',
     'datasets_bb',
-    # 'datasets_c',
-    # 'datasets_e',
+    'datasets_c',
+    'datasets_e',
     'datasets_g',
     'datasets_john',
     'datasets_s',
-    'datasets_x',
-    'frames0331',
-    'frames0331b',
-    'frames_sim0407',
 ]
-output_name: 'datasets_allx3'
+output_name = 'datasets_0415'
 
 root_dir = repo_path / 'bfmc_data' / 'base' / 'datasets'
 output_dir = repo_path / 'bfmc_data' / 'generated' / output_name

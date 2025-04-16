@@ -3,7 +3,7 @@ import shutil
 import yaml
 from pathlib import Path
 
-repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+repo_path = Path(__file__).resolve().parent.parent
 
 testsets = [
     'rf2024',
@@ -11,16 +11,17 @@ testsets = [
     'rf2024b',
     'rf2024c',
     'vroom',
-    # 'car_test_padded',
-    # 'frames_sim0407',
-    # 'lab',
-    # 'rf0309b',
-    # 'team2021',
-    # 'xinya',
+    'car_test_padded',
+    'frames_sim0407',
+    'lab',
+    'rf0309b',
+    'team2021',
+    'xinya',
 ]
-output_name = 'TestSet2024'
+output_name = 'TestSetAll'
 def combine_testsets():
-    output_base_dir = repo_path / 'bfmc_data' / 'generated'
+    output_base_dir = repo_path / 'bfmc_data' / 'generated' / 'testsets'
+    input_base_dir = repo_path / 'bfmc_data' / 'base' / 'testsets'
 
     if not output_name or not output_base_dir or not testsets:
         print("[ERROR] Missing required keys in config: 'output_name', 'output_base_dir', or 'datasets'")
@@ -34,8 +35,8 @@ def combine_testsets():
 
     total_images = 0
     for dataset in testsets:
-        img_dir = os.path.join(output_base_dir, dataset, "images")
-        label_dir = os.path.join(output_base_dir, dataset, "labels")
+        img_dir = os.path.join(input_base_dir, dataset, "images")
+        label_dir = os.path.join(input_base_dir, dataset, "labels")
 
         if not os.path.isdir(img_dir) or not os.path.isdir(label_dir):
             print(f"[WARNING] Skipping {dataset} - missing image or label directory.")

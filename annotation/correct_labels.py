@@ -12,7 +12,7 @@ import numpy as np
 repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 class_names = [
-    "oneway", "highwayentrance", "stop", "roundabout", "park",
+    "oneway", "highwayentrance", "stopsign", "roundabout", "park",
     "crosswalk", "noentry", "highwayexit", "prio", "light",
     "roadblock", "girl", "cars2"
 ]
@@ -25,8 +25,10 @@ for k in ['a', 'p', 'o', 'i', 'x', 'n', 'b', 'q', 'left', 'right', 'up', 'down']
         matplotlib.rcParams['keymap.zoom'].remove(k)
 # ---------------- Configuration ----------------
 # root = os.path.join(repo_path, "bfmc_data", "base", "testsets", "xinya")
-root = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_g")
-DEBUG = True
+# root = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_g")
+root = os.path.join(repo_path, "bfmc_data", "base", "unprocessed", "frames_0402_lights")
+root = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_city_padded")
+DEBUG = False
 
 IMAGE_FOLDER = os.path.join(root, "images")
 LABEL_FOLDER = os.path.join(root, "labels")

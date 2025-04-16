@@ -3,20 +3,28 @@ import requests
 from tqdm import tqdm
 from dotenv import load_dotenv
 from pathlib import Path
+import re
 
-repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+repo_path = Path(__file__).resolve().parent.parent
 
 # === CONFIGURATION ===
 load_dotenv()
 PIXABAY_API_KEY = os.getenv("PIXABAY_API_KEY")
-QUERY = "lake"
-NUM_IMAGES = 200
-offset = 2000
-root = repo_path / "bfmc_data" / "base" / "backgrounds"
+QUERY = "school"
+NUM_IMAGES = 100
+root = repo_path / "bfmc_data" / "base"
 OUTPUT_DIR = os.path.join(root, "bg_pixabay")
 
-os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+existing_files = [f for f in os.listdir(OUTPUT_DIR) if f.startswith("bg_") and f.endswith(".jpg")]
+existing_indices = []
+for f in existing_files:
+    match = re.search(r"bg_(\d+)\.jpg", f)
+    if match:
+        existing_indices.append(int(match.group(1)))
+
+offset = max(existing_indices, default=0)
 def fetch_pixabay_images(query, num_images, api_key):
     per_page = 20
     total_pages = (num_images // per_page) + 1
@@ -51,7 +59,6 @@ def download_images(urls, output_dir):
             img_data = requests.get(url).content
             with open(os.path.join(output_dir, f"bg_{len(downloaded_urls)+offset+1}.jpg"), "wb") as f:
                 f.write(img_data)
-            print(f"saved bg_{len(downloaded_urls)+offset+1}.jpg")
             downloaded_urls.add(url)
         except Exception as e:
             print(f"Failed to download image {idx+offset+1}: {e}")

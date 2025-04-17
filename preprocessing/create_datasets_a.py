@@ -27,25 +27,24 @@ for filename in os.listdir(BG_LABEL_DIR):
         dst = os.path.join(DEST_LABEL_DIR, filename)
         shutil.copyfile(src, dst)
 
-def compute_iou(boxA, boxB):
-    # box format: [left, right, top, bottom]
+def compute_intersection_area(boxA, boxB):
     xA = max(boxA[0], boxB[0])
     yA = max(boxA[2], boxB[2])
     xB = min(boxA[1], boxB[1])
     yB = min(boxA[3], boxB[3])
-    # Compute intersection area
     interWidth = max(0, xB - xA)
     interHeight = max(0, yB - yA)
-    interArea = interWidth * interHeight
-    
+    return interWidth * interHeight
+
+def overlap(boxA, boxB, threshold=0.3):
+    inter_area = compute_intersection_area(boxA, boxB)
     areaA = (boxA[1] - boxA[0]) * (boxA[3] - boxA[2])
     areaB = (boxB[1] - boxB[0]) * (boxB[3] - boxB[2])
-    iou = interArea / float(areaA + areaB - interArea)
-    return iou
 
-def overlap(boxA, boxB, threshold=0.35):
-    # Returns True if the IoU is greater than the threshold.
-    return compute_iou(boxA, boxB) > threshold
+    if areaA == 0 or areaB == 0:
+        return False
+
+    return (inter_area / areaA > threshold) or (inter_area / areaB > threshold)
 def insertImage(imgs, imgClasses, ratios, bg, imgType, number, df, testing = False):
     name = df.iloc[number,0].replace("'", "")
     name2 = name.replace("car_ims/", "")
@@ -55,19 +54,20 @@ def insertImage(imgs, imgClasses, ratios, bg, imgType, number, df, testing = Fal
     label_path = os.path.join(DEST_LABEL_DIR, name_txt)
     f = open(label_path, 'a')
     df1 = pd.read_csv(label_path, sep=' ', header=None)
-    a = df1.iloc[0,1]*1280
-    b = df1.iloc[0,3]*640
-    c = df1.iloc[0,2]*960
-    d = df1.iloc[0,3]*480
-    left1 = int(0.5*(a-b))
-    right1 = int(0.5*(a+b))
-    bot1 = int(0.5*(c+d))
-    top1 = int(0.5*(c-d))
+    _, x_c, y_c, w_n, h_n = df1.iloc[0, 0:5]
+    img_h, img_w = bg.shape[:2]
+    x_center = x_c * img_w
+    y_center = y_c * img_h
+    w_pix    = w_n * img_w
+    h_pix    = h_n * img_h
+    left1   = int(x_center - w_pix/2)
+    right1  = int(x_center + w_pix/2)
+    top1    = int(y_center - h_pix/2)
+    bot1    = int(y_center + h_pix/2)
     ds = np.array([int(left1), int(right1), int(top1), int(bot1)])
     # print("ds: ", ds)
     f = open(label_path, 'a')
-    occupied = []
-    occupied.append(ds)
+    occupied = [ds]
     for i in range(len(imgs)):
         stuck = False
         t1 = time.time()+10
@@ -80,18 +80,8 @@ def insertImage(imgs, imgClasses, ratios, bg, imgType, number, df, testing = Fal
                 stuck = True
                 print("stuck")
                 break
-            #print("occupied: ",occupied)
             flag = False
             sz = max(img1.shape)
-#             if sz > 270:
-#                 ratio = np.random.uniform(low=0.8, high=0.85)
-#             elif sz > 240:
-#                 ratio = np.random.uniform(low=0.8, high=0.9)
-#             elif sz > 210:
-#                 ratio = np.random.uniform(low=0.85, high=0.95)
-#             else:
-#                 ratio = 1
-#             img = cv2.resize(img1, (int(img1.shape[1]*ratio),int(img1.shape[0]*ratio)))
             img = img1
             #print("shapes: ", bg.shape, img.shape)
             maxOffsetX = bg.shape[1] - img.shape[1]
@@ -104,12 +94,11 @@ def insertImage(imgs, imgClasses, ratios, bg, imgType, number, df, testing = Fal
             #print("dimensions: ", dimensions)
             for o in occupied:
                 if overlap(dimensions, o):
+                    # print("overlapped, dimensions: ", dimensions, "o: ", o)
                     flag = True
-                    #print("overlapped, try again")
         if stuck:
             print("stuck at i: ", i)
             continue
-        #print(dimensions)
         d = dimensions.copy()
         occupied.append(d)
         bg[top:bot,left:right] = img

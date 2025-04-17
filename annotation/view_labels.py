@@ -97,7 +97,7 @@ def show_images(images, start_index):
         elif key == ord('q'):
             return 0
 
-base_path = os.path.join(repo_path, "bfmc_data", "generated", "datasets_c")
+base_path = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_c")
 image_folder = os.path.join(base_path, "images")
 label_folder = os.path.join(base_path, "labels")
 

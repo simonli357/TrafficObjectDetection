@@ -99,7 +99,6 @@ def adjust_contrast_blend(image, min_contrast=20, max_contrast=70, max_attempts=
     return image  # fallback to original if no valid result
 
 def apply_desaturation(image):
-    # Desaturate with a random strength up to 0.8
     strength = random.uniform(0.3, 0.8)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     gray_three = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
@@ -190,13 +189,15 @@ def apply_sun(image):
     x1, x2 = sorted([random.uniform(0.1, 0.4), random.uniform(0.6, 0.9)])
     y1, y2 = sorted([random.uniform(0.1, 0.4), random.uniform(0.3, 0.5)])
 
+    # random radius based on image size
+    radius = int(min(h, w) * random.uniform(0.1, 0.25))
     aug = A.Compose([
         RandomSunFlare(
             flare_roi=(x1, y1, x2, y2),
             angle_lower=random.uniform(0.3, 1.0),
             num_flare_circles_lower=6,
             num_flare_circles_upper=10,
-            src_radius=100,
+            src_radius=radius,
             src_color=(255, 255, 255),
             always_apply=True
         )
@@ -208,7 +209,7 @@ def apply_rain(image):
     aug = A.Compose([
         RandomRain(
             blur_value=random.choice([2, 3]),
-            brightness_coefficient=random.uniform(0.7, 0.9),
+            brightness_coefficient=random.uniform(0.75, 0.95),
             always_apply=True
         )
     ])

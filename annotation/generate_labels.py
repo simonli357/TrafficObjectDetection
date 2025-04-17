@@ -5,7 +5,7 @@ import tqdm
 
 repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-MODEL_PATH = os.path.join(repo_path, 'training', 'models', 'core_allxd13.pt')
+MODEL_PATH = os.path.join(repo_path, 'training', 'models', 'xenia.pt')
 name = 'bfmc2020'
 root = os.path.join(repo_path, 'bfmc_data', 'base', 'unprocessed')
 INPUT_DIR = os.path.join(root, name, 'images')

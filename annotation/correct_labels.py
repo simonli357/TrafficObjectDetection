@@ -8,8 +8,12 @@ import shutil
 import threading
 import time
 import numpy as np
+from pathlib import Path
+import random
 
-repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+random.seed(357)
+
+repo_path = Path(__file__).resolve().parent.parent
 
 class_names = [
     "oneway", "highwayentrance", "stopsign", "roundabout", "park",
@@ -28,12 +32,14 @@ for k in ['a', 'p', 'o', 'i', 'x', 'n', 'b', 'q', 'left', 'right', 'up', 'down']
 # root = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_g")
 root = os.path.join(repo_path, "bfmc_data", "base", "unprocessed", "frames_0402_lights")
 root = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_city_padded")
+# root = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_a")
 DEBUG = False
 
 IMAGE_FOLDER = os.path.join(root, "images")
 LABEL_FOLDER = os.path.join(root, "labels")
 TRASH_FOLDER = os.path.join(root, "_trash")
 os.makedirs(LABEL_FOLDER, exist_ok=True)
+BACKGROUND_FOLDER = repo_path / "bfmc_data" / "base" / "backgrounds"
 
 CLASS_NAMES = [
     "oneway", "highwayentrance", "stop", "roundabout", "parking",
@@ -434,6 +440,45 @@ class AnnotationApp:
                 self.load_image()
         elif event.key == 'q':
             plt.close()
+        elif event.key == 'h' and self.selected_box:
+            box = self.selected_box
+            x1 = int(max(0, round(box.x)))
+            y1 = int(max(0, round(box.y)))
+            x2 = int(min(self.img_w, round(box.x + box.w)))
+            y2 = int(min(self.img_h, round(box.y + box.h)))
+            bw = x2 - x1
+            bh = y2 - y1
+
+            if bw > 0 and bh > 0:
+                # Load a random background image
+                bg_files = [f for f in os.listdir(BACKGROUND_FOLDER) if f.lower().endswith(('.jpg', '.png'))]
+                if not bg_files:
+                    print("No background images found.")
+                    return
+                bg_path = os.path.join(BACKGROUND_FOLDER, random.choice(bg_files))
+                bg_img = cv2.cvtColor(cv2.imread(bg_path), cv2.COLOR_BGR2RGB)
+                bh_img, bw_img = bg_img.shape[:2]
+
+                # If bg image too small, resize it to fit at least the patch size
+                if bw_img < bw or bh_img < bh:
+                    scale_w = bw / bw_img
+                    scale_h = bh / bh_img
+                    scale = max(scale_w, scale_h)
+                    bg_img = cv2.resize(bg_img, (int(bw_img * scale), int(bh_img * scale)))
+                    bh_img, bw_img = bg_img.shape[:2]
+
+                # Choose random top-left position
+                max_x = bw_img - bw
+                max_y = bh_img - bh
+                start_x = random.randint(0, max_x)
+                start_y = random.randint(0, max_y)
+
+                patch = bg_img[start_y:start_y+bh, start_x:start_x+bw]
+
+                self.image[y1:y2, x1:x2] = patch
+                self.redraw()
+
+                print(f"Replaced region ({x1},{y1})–({x2},{y2}) with patch from {os.path.basename(bg_path)}")
         elif event.key == 'm' and self.selected_box:
             box = self.selected_box
             x1 = int(max(0, round(box.x)))

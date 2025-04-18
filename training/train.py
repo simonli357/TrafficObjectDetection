@@ -11,7 +11,7 @@ results_dir = os.path.join(repo_path, 'training', 'runs')
 augment_path = os.path.join(repo_path, 'config/augment_config_default.yaml')
 model_path = os.path.join(repo_path, 'training', 'models', 'yolov8n.pt')
 data={
-    'train': os.path.join(repo_path, 'bfmc_data/generated/datasets_0417b'),
+    'train': os.path.join(repo_path, 'bfmc_data/generated/datasets_0417'),
     'val': os.path.join(repo_path, 'bfmc_data/generated/testsets/TestSetAll'),
     'test': os.path.join(repo_path, 'bfmc_data/generated/testsets/TestSetAll'),
     'num_epoc7': num_epochs,

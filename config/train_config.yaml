@@ -14,5 +14,5 @@ names:
   12: car
 num_epoc7: 15
 test: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/testsets/TestSetAll
-train: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/datasets_0417
+train: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/datasets_0417b
 val: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/testsets/TestSetAll

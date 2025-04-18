@@ -8,7 +8,7 @@ from pathlib import Path
 repo_path = Path(__file__).resolve().parent.parent
 
 # --- CONFIGURATION ---
-weights_dir = repo_path / "training" / "runs" / "core0416c15" / "weights"
+weights_dir = repo_path / "training" / "runs" / "core041620" / "weights"
 yaml_path = repo_path / "config" / "train_config.yaml"
 with open(yaml_path, 'r') as f:
     config = yaml.safe_load(f)

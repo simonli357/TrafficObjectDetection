@@ -7,7 +7,7 @@ from pathlib import Path
 repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 # --- CONFIGURATION ---
-model_dir = os.path.join(repo_path, "training", "runs", "core041815", "weights")
+model_dir = os.path.join(repo_path, "training", "runs", "core0418b15", "weights")
 yaml_path = os.path.join(repo_path, "config", "train_config.yaml")
 
 device = 0  # or 'cuda:0'

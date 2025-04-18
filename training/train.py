@@ -5,7 +5,7 @@ import shutil
 from pathlib import Path
 
 repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-NAME = 'core0417b'
+NAME = 'core0418'
 num_epochs = 15
 results_dir = os.path.join(repo_path, 'training', 'runs')
 augment_path = os.path.join(repo_path, 'config/augment_config_default.yaml')

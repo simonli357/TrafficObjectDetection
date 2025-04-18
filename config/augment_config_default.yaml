@@ -1,6 +1,6 @@
 # tunable
 fliplr: 0.0               # Horizontal flip probability
-hsv_s: 0.7                # Saturation augmentation
+hsv_s: 0.3                # Saturation augmentation
 hsv_v: 0.4                # Value (brightness) augmentation
 translate: 0.1            # Translation as a fraction of image size
 scale: 0.5                # Scale gain factor

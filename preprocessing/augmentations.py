@@ -60,7 +60,7 @@ def get_brightness_level(image):
 
 def adjust_brightness(image, min_brightness=20, max_brightness=246, max_attempts=5):
     for _ in range(max_attempts):
-        beta = random.randint(-10, 10)
+        beta = random.randint(-20, 20)
         adjusted = cv2.convertScaleAbs(image, alpha=1.0, beta=beta)
         brightness = get_brightness_level(adjusted)
         if min_brightness <= brightness <= max_brightness:
@@ -77,7 +77,7 @@ def get_contrast_level(image):
 
 def adjust_contrast(image, min_contrast=15, max_contrast=70, max_attempts=5):
     for _ in range(max_attempts):
-        alpha = random.uniform(0.85, 1.15)
+        alpha = random.uniform(0.75, 1.25)
         adjusted = cv2.convertScaleAbs(image, alpha=alpha, beta=0)
         contrast = get_contrast_level(adjusted)
         if min_contrast <= contrast <= max_contrast:
@@ -90,7 +90,7 @@ def adjust_contrast(image, min_contrast=15, max_contrast=70, max_attempts=5):
 
 def adjust_contrast_blend(image, min_contrast=20, max_contrast=70, max_attempts=5):
     for _ in range(max_attempts):
-        contrast_factor = random.uniform(0.7, 0.9)
+        contrast_factor = random.uniform(0.4, 0.8)  # more conservative range
         gray = np.full_like(image, np.mean(image, dtype=np.uint8))
         adjusted = cv2.addWeighted(image, contrast_factor, gray, 1 - contrast_factor, 0)
         contrast = get_contrast_level(adjusted)
@@ -99,14 +99,14 @@ def adjust_contrast_blend(image, min_contrast=20, max_contrast=70, max_attempts=
     return image  # fallback to original if no valid result
 
 def apply_desaturation(image):
-    strength = random.uniform(0.2, 0.6)
+    strength = random.uniform(0.3, 0.8)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     gray_three = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
     return cv2.addWeighted(image, 1 - strength, gray_three, strength, 0)
 
 def apply_color_temperature(image):
     # Warm effect with random factor up to 0.4
-    warm_factor = random.uniform(0.1, 0.35)
+    warm_factor = random.uniform(0.1, 0.4)
     img = image.astype(np.float32)
     img[..., 2] *= 1 + warm_factor
     img[..., 0] *= 1 - warm_factor
@@ -143,11 +143,11 @@ def strong_color_shift(image, path):
 
     # Define channel multipliers
     if dominant == 'blue':
-        r_scale = random.uniform(0.57, 0.75)
-        g_scale = random.uniform(1.1, 1.25)
-        b_scale = random.uniform(1.2, 1.6)
+        r_scale = random.uniform(0.5, 0.7)
+        g_scale = random.uniform(1.1, 1.3)
+        b_scale = random.uniform(1.2, 1.7)
     elif dominant == 'red':
-        r_scale = random.uniform(1.1, 1.25)
+        r_scale = random.uniform(1.1, 1.3)
         g_scale = random.uniform(0.8, 1.0)
         b_scale = random.uniform(0.8, 1.0)
     elif dominant == 'yellow':
@@ -156,7 +156,7 @@ def strong_color_shift(image, path):
         b_scale = random.uniform(1.0, 1.3)
     elif dominant == 'green':
         r_scale = random.uniform(0.8, 1.0)
-        g_scale = random.uniform(1.1, 1.25)
+        g_scale = random.uniform(1.1, 1.3)
         b_scale = random.uniform(0.8, 1.0)
     else:
         r_scale = g_scale = b_scale = random.uniform(0.8, 1.2)
@@ -219,9 +219,9 @@ def apply_albumentations_enhancements(image):
     # Random brightness, contrast, hue, saturation, and value adjustments
     aug = A.Compose([
         RandomBrightnessContrast(
-            brightness_limit=0.15, contrast_limit=0.23, p=1.0),
+            brightness_limit=0.2, contrast_limit=0.3, p=1.0),
         HueSaturationValue(
-            hue_shift_limit=15, sat_shift_limit=15, val_shift_limit=15, p=1.0)
+            hue_shift_limit=15, sat_shift_limit=25, val_shift_limit=20, p=1.0)
     ])
     return aug(image=image)['image']
 

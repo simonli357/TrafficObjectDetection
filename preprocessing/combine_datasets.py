@@ -2,9 +2,10 @@ import os
 import shutil
 from pathlib import Path
 from tqdm import tqdm
-from concurrent.futures import ProcessPoolExecutor, as_completed
-from multiprocessing import Manager
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import Lock
 
+# Paths and dataset configuration
 repo_path = Path(__file__).resolve().parent.parent
 
 datasets = [
@@ -17,7 +18,7 @@ datasets = [
     'datasets_john', 
     'datasets_s',
 ]
-output_name = 'datasets_0416'
+output_name = 'datasets_0417'
 
 root_dir = repo_path / 'bfmc_data' / 'base' / 'datasets'
 output_dir = repo_path / 'bfmc_data' / 'generated' / output_name
@@ -28,15 +29,21 @@ labels_train = output_dir / 'labels'
 for p in [images_train, labels_train]:
     p.mkdir(parents=True, exist_ok=True)
 
-def safe_copy_pair(img_path, label_path, dst_img_dir, dst_label_dir, used_names, prefix):
+# Thread-safe used name set
+used_names = set()
+used_names_lock = Lock()
+
+def safe_copy_pair(img_path, label_path, dst_img_dir, dst_label_dir, prefix):
     base = f"{prefix}_{img_path.stem}"
     ext = img_path.suffix
     new_name = base
     i = 1
-    while f"{new_name}{ext}" in used_names:
-        new_name = f"{base}_{i}"
-        i += 1
-    used_names.add(f"{new_name}{ext}")
+
+    with used_names_lock:
+        while f"{new_name}{ext}" in used_names:
+            new_name = f"{base}_{i}"
+            i += 1
+        used_names.add(f"{new_name}{ext}")
 
     try:
         shutil.copy(img_path, dst_img_dir / f"{new_name}{ext}")
@@ -60,20 +67,16 @@ def build_copy_tasks():
     return tasks
 
 def parallel_copy():
-    manager = Manager()
-    used_names = manager.list()
     tasks = build_copy_tasks()
-
     print(f"📦 Copying {len(tasks)} image-label pairs across datasets...")
 
-    results = []
-    with ProcessPoolExecutor() as executor:  # swap with ThreadPoolExecutor if needed
+    with ThreadPoolExecutor() as executor:
         futures = [
-            executor.submit(safe_copy_pair, img, lbl, img_dst, lbl_dst, used_names, prefix)
+            executor.submit(safe_copy_pair, img, lbl, img_dst, lbl_dst, prefix)
             for img, lbl, img_dst, lbl_dst, prefix in tasks
         ]
         for _ in tqdm(as_completed(futures), total=len(futures), desc="Copying"):
-            pass  # tqdm will show progress
+            pass
 
     print("✅ Dataset combination complete.")
 

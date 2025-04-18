@@ -12,7 +12,7 @@ names:
   10: block
   11: girl
   12: car
-num_epochs: 15
+num_epoc7: 15
 test: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/testsets/TestSetAll
-train: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/datasets_0416
+train: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/datasets_0417
 val: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/testsets/TestSetAll

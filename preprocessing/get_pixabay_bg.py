@@ -13,7 +13,7 @@ PIXABAY_API_KEY = os.getenv("PIXABAY_API_KEY")
 QUERY = "school"
 NUM_IMAGES = 100
 root = repo_path / "bfmc_data" / "base"
-OUTPUT_DIR = os.path.join(root, "bg_pixabay")
+OUTPUT_DIR = os.path.join(root, "backgrounds")
 
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)

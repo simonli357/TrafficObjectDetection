@@ -14,7 +14,7 @@ def save_image_grid(img_grid, start_index, end_index):
 def display_images(label_files, start_index):
     displayed_images = []
 
-    for i in range(start_index, start_index + 32):
+    for i in range(start_index, start_index + GRID_ROWS*GRID_COLS):
         if i >= len(label_files):
             break
 
@@ -58,30 +58,44 @@ def display_images(label_files, start_index):
 
     return displayed_images
 
+WINDOW_WIDTH = 1920
+WINDOW_HEIGHT = 1080
+WINDOW_NAME = "Image Grid"
+
+# Grid layout (can change freely!)
+GRID_ROWS = 4
+GRID_COLS = 8
+
+cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
+cv2.resizeWindow(WINDOW_NAME, WINDOW_WIDTH, WINDOW_HEIGHT)
 def show_images(images, start_index):
     if len(images) == 0:
         return 0
 
-    # resized_images = [cv2.resize(img, (176, 176)) for img in images]
-    resized_images = [cv2.resize(img, (240, 240)) for img in images]
+    # Dynamically compute image size based on grid and fixed window size
+    tile_width = WINDOW_WIDTH // GRID_COLS
+    tile_height = WINDOW_HEIGHT // GRID_ROWS
+    tile_size = (tile_width, tile_height)
 
-    grid_rows = 4
-    grid_cols = 8
+    resized_images = [cv2.resize(img, tile_size) for img in images]
+
     img_grid = []
 
-    for row in range(grid_rows):
+    for row in range(GRID_ROWS):
         row_imgs = []
-        for col in range(grid_cols):
-            idx = row * grid_cols + col
+        for col in range(GRID_COLS):
+            idx = row * GRID_COLS + col
             if idx < len(resized_images):
                 row_imgs.append(resized_images[idx])
             else:
-                row_imgs.append(np.zeros_like(resized_images[0]))
+                # Add blank tile if not enough images
+                row_imgs.append(np.zeros((tile_height, tile_width, 3), dtype=np.uint8))
         img_grid.append(np.hstack(row_imgs))
 
     img_grid = np.vstack(img_grid)
 
-    cv2.imshow("Image Grid", img_grid)
+    # Already sized to window, no need to resize
+    cv2.imshow(WINDOW_NAME, img_grid)
 
     while True:
         key = cv2.waitKey(1) & 0xFF
@@ -98,6 +112,7 @@ def show_images(images, start_index):
             return 0
 
 base_path = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_c")
+base_path = os.path.join(repo_path, "bfmc_data", "generated", "datasets_0416d")
 image_folder = os.path.join(base_path, "images")
 label_folder = os.path.join(base_path, "labels")
 
@@ -120,9 +135,9 @@ while True:
     action = show_images(images, start_index)
 
     if action == 1:  # 'd' is pressed
-        start_index += 32
+        start_index += GRID_ROWS*GRID_COLS
     elif action == 2:  # 'a' is pressed
-        start_index = max(start_index - 32, 0)
+        start_index = max(start_index - GRID_ROWS*GRID_COLS, 0)
     elif action == 3:  # 's' is pressed
         # The image grid has already been saved in the `show_images()` function.
         pass
@@ -130,7 +145,7 @@ while True:
         cv2.destroyAllWindows()
         break
     else: #'r' is pressed, randomly increment index
-        rd = np.random.randint(low=0, high=int(len(label_files)/32))
+        rd = np.random.randint(low=0, high=int(len(label_files)/GRID_ROWS*GRID_COLS))
         print("'r' pressed, shift by ", rd)
         start_index += rd
 

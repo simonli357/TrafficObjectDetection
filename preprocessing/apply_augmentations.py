@@ -21,7 +21,8 @@ def apply_random_from_group(image, group_id, image_path=None):
     elif group_id == 2:
         return apply_desaturation(image)
     elif group_id == 3:
-        func = random.choice([adjust_contrast_blend, adjust_contrast, lambda x, *_:x])
+        # func = random.choice([adjust_contrast_blend, adjust_contrast, lambda x, *_:x])
+        return random.choice([adjust_contrast_blend, adjust_contrast])(image)
         try:
             if func == apply_sun:
                 return func(image)
@@ -29,23 +30,15 @@ def apply_random_from_group(image, group_id, image_path=None):
         except Exception as e:
             return image
     elif group_id == 4:
-        try:
-            return apply_motion_blur(image)
-        except Exception:
-            return image
+        return apply_motion_blur(image)
     elif group_id == 5:
-        try:
-            return random.choice([apply_defocus_blur])(image)
-        except Exception:
-            return image
+        return random.choice([apply_defocus_blur])(image)
     elif group_id == 6:
-        func = random.choice([apply_albumentations_enhancements, lambda x, *_: x, apply_rain, apply_sun])
-        try:
-            if func == strong_color_shift:
-                return func(image, image_path)
-            return func(image)
-        except Exception:
-            return image
+        # func = random.choice([apply_albumentations_enhancements, lambda x, *_: x, apply_rain, apply_sun])
+        func = random.choice([apply_albumentations_enhancements, lambda x, *_: x])
+        if func == strong_color_shift:
+            return func(image, image_path)
+        return func(image)
     elif group_id == 7:
         return random.choice([rotate, perspective_warp])(image)
     elif group_id == 8:

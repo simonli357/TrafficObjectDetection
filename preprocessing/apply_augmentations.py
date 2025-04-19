@@ -102,6 +102,7 @@ if __name__ == "__main__":
     num_augments = 2
 
     for idx in range(9):
+    # for idx in range(10, 11):
         folder_path = os.path.join(repo_path, "bfmc_data", "base", "crop", CLASS_NAMES[idx])
         output_path = os.path.join(repo_path, "bfmc_data", "generated", "crop_augmented", CLASS_NAMES[idx])
         os.makedirs(output_path, exist_ok=True)

@@ -4,14 +4,14 @@ from ultralytics import YOLO
 import shutil
 from pathlib import Path
 
-repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-NAME = 'core0418b'
+repo_path = Path(__file__).resolve().parent.parent
+NAME = 'core0418e'
 num_epochs = 15
 results_dir = os.path.join(repo_path, 'training', 'runs')
 augment_path = os.path.join(repo_path, 'config/augment_config_default.yaml')
 model_path = os.path.join(repo_path, 'training', 'models', 'yolov8n.pt')
 data={
-    'train': os.path.join(repo_path, 'bfmc_data/generated/datasets_0416c'),
+    'train': os.path.join(repo_path, 'bfmc_data/generated/datasets_0416'),
     'val': os.path.join(repo_path, 'bfmc_data/generated/testsets/TestSetAll'),
     'test': os.path.join(repo_path, 'bfmc_data/generated/testsets/TestSetAll'),
     'num_epochs': num_epochs,
@@ -48,6 +48,14 @@ output_dir = os.path.join(results_dir, NAME + str(num_epochs))
 os.makedirs(os.path.join(output_dir, 'config'), exist_ok=True)
 shutil.copy2(yaml_path, os.path.join(output_dir, 'config', 'train_config.yaml'))
 shutil.copy2(augment_path, os.path.join(output_dir, 'config', 'augment_config.yaml'))
+local_augment_path = repo_path / 'preprocessing' / 'augmentations.py'
+local_augment_path2 = repo_path / 'preprocessing' / 'apply_augmentations.py'
+resize_path = repo_path / 'preprocessing' / 'resize_normal.py'
+combine_datasets_path = repo_path / 'preprocessing' / 'combine_datasets.py'
+shutil.copy2(local_augment_path, os.path.join(output_dir, 'config', 'augmentations.py'))
+shutil.copy2(local_augment_path2, os.path.join(output_dir, 'config', 'apply_augmentations.py'))
+shutil.copy2(resize_path, os.path.join(output_dir, 'config', 'resize_normal.py'))
+shutil.copy2(combine_datasets_path, os.path.join(output_dir, 'config', 'combine_datasets.py'))
 
 model.train(
     device=0,

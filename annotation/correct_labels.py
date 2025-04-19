@@ -32,7 +32,8 @@ for k in ['a', 'p', 'o', 'i', 'x', 'n', 'b', 'q', 'left', 'right', 'up', 'down']
 # root = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_g")
 root = os.path.join(repo_path, "bfmc_data", "base", "unprocessed", "frames_0402_lights")
 root = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_city_padded")
-# root = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_a")
+# root = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_a0416c")
+# root = os.path.join(repo_path, "bfmc_data", "generated", "datasets_0416")
 DEBUG = False
 
 IMAGE_FOLDER = os.path.join(root, "images")

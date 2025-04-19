@@ -115,8 +115,9 @@ class_names = [
 ]
 
 # -------------------- MAIN --------------------
-name = 'TestSet2024'
-root = repo_path / 'bfmc_data' / 'generated' / 'testsets' / name
+name = 'datasets_0416'
+root = repo_path / 'bfmc_data' / 'generated' / name
+# root = repo_path / 'bfmc_data' / 'base' / 'datasets' / name
 train_label_dir = root / 'labels'
 
 print("🔍 Analyzing YOLOv8 train labels...")

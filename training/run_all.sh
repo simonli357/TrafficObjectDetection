@@ -14,6 +14,13 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+echo "Starting plot_all_epochs script..."
+python3 /home/slsecret/TrafficObjectDetection/training/plot_all_epochs.py
+if [ $? -ne 0 ]; then
+    echo "Plotting script failed. Exiting."
+    exit 1
+fi
+
 echo "Starting Rainbow DQN script..."
 python3 /home/slsecret/COMP579/project/src/rainbow_dqn/rainbow_dqn2.py
 if [ $? -ne 0 ]; then

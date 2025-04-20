@@ -13,26 +13,29 @@ def identity(image, *args, **kwargs):
     return image
 normal_augmentations = [
     [apply_motion_blur, apply_pixelation],
-    [increase_brightness, decrease_brightness, increase_contrast, decrease_contrast],
-    [increase_saturation, decrease_saturation, apply_color_temperature, strong_color_shift],
+    [increase_brightness, decrease_brightness, increase_contrast, decrease_contrast, strong_color_shift],
+    [increase_saturation, decrease_saturation, apply_color_temperature],
     [apply_defocus_blur, apply_sun, apply_rain, identity],
     [rotate, perspective_warp],
 ]
 light_augmentations = [
-    [apply_motion_blur, apply_pixelation],
-    [increase_brightness, decrease_brightness, increase_contrast, decrease_contrast],
+    [apply_motion_blur],
+    [apply_pixelation],
+    [increase_brightness, decrease_brightness, increase_contrast, decrease_contrast, identity],
     [increase_saturation, decrease_saturation, apply_rain, identity],
     [apply_defocus_blur, rotate, apply_sun, identity],
 ]
 girl_augmentations = [
-    [apply_motion_blur, apply_pixelation],
+    [apply_motion_blur],
+    [apply_pixelation],
     [increase_brightness, decrease_brightness, increase_contrast, decrease_contrast],
     [increase_saturation, decrease_saturation, apply_color_temperature],
     [apply_defocus_blur, apply_sun, apply_rain, identity],
     [rotate],
 ]
 car_augmentations = [
-    [apply_motion_blur, apply_pixelation],
+    [apply_motion_blur],
+    [apply_pixelation],
     [increase_brightness, decrease_brightness, increase_contrast, decrease_contrast],
     [increase_saturation, decrease_saturation, apply_color_temperature],
     [apply_defocus_blur, apply_sun, apply_rain, identity],

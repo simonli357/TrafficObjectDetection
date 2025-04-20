@@ -73,7 +73,7 @@ def get_contrast_level(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     return np.std(gray)
 
-def increase_contrast(image, min_factor=1.25, max_factor=3.57, testing=False):
+def increase_contrast(image, min_factor=1.15, max_factor=3.14, testing=False):
     max_brightness = 247
     max_aug_factor = 1 + 0.4
     max_allowed_brightness = math.floor(max_brightness / max_aug_factor)
@@ -97,8 +97,8 @@ def increase_contrast(image, min_factor=1.25, max_factor=3.57, testing=False):
         print("Brightness increase failed after max attempts.")
     return image
 
-def decrease_contrast(image, min_factor=0.15, max_factor=0.7, testing=False):
-    min_brightness = math.ceil(15 / (1-0.4))
+def decrease_contrast(image, min_factor=0.22, max_factor=0.753, testing=False):
+    min_brightness = math.ceil(22 / (1-0.4))
     for _ in range(5):
         factor = random.uniform(min_factor, max_factor)
         if testing:
@@ -119,8 +119,8 @@ def decrease_contrast(image, min_factor=0.15, max_factor=0.7, testing=False):
         print("Brightness decrease failed after max attempts.")
     return image
 
-def increase_brightness(image, min_beta=50, max_beta=150, max_attempts=5, testing=False):
-    target_max= 248 / (1 + 0.4)
+def increase_brightness(image, min_beta=30, max_beta=150, max_attempts=5, testing=False):
+    target_max= 247 / (1 + 0.4)
     current = get_brightness_level(image)
     for _ in range(max_attempts):
         beta = random.randint(min_beta, max_beta)
@@ -136,8 +136,8 @@ def increase_brightness(image, min_beta=50, max_beta=150, max_attempts=5, testin
         print(f"[increase_brightness] Fallback beta={safe_beta}")
     return adjusted
 
-def decrease_brightness(image, min_beta=37, max_beta=150, max_attempts=5, testing=False):
-    target_min = 15 / (1 - 0.4)
+def decrease_brightness(image, min_beta=15, max_beta=125, max_attempts=5, testing=False):
+    target_min = 22 / (1 - 0.4)
     current = get_brightness_level(image)
     for _ in range(max_attempts):
         beta = random.randint(min_beta, max_beta)
@@ -154,27 +154,11 @@ def decrease_brightness(image, min_beta=37, max_beta=150, max_attempts=5, testin
         print(f"[decrease_brightness] Fallback beta={-safe_beta}")
     return adjusted
 
-# def adjust_contrast_blend(image, min_contrast=20, max_contrast=70, max_attempts=5):
-#     for _ in range(max_attempts):
-#         contrast_factor = random.uniform(0.7, 0.9)
-#         gray = np.full_like(image, np.mean(image, dtype=np.uint8))
-#         adjusted = cv2.addWeighted(image, contrast_factor, gray, 1 - contrast_factor, 0)
-#         contrast = get_contrast_level(adjusted)
-#         if min_contrast <= contrast <= max_contrast:
-#             return adjusted
-#     return image  # fallback to original if no valid result
-
-def apply_desaturation(image):
-    strength = random.uniform(0.2, 0.6)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    gray_three = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
-    return cv2.addWeighted(image, 1 - strength, gray_three, strength, 0)
-
 def get_saturation_level(image):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     return np.mean(hsv[..., 1])
 
-def increase_saturation(image, min_factor=2.5, max_factor=5.5, max_attempts=5, testing=False):
+def increase_saturation(image, min_factor=1.5, max_factor=5.0, max_attempts=5, testing=False):
     target_max= 250 #/ (1 + 0.7)
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV).astype(np.float32)
     current = get_saturation_level(image)
@@ -200,8 +184,8 @@ def increase_saturation(image, min_factor=2.5, max_factor=5.5, max_attempts=5, t
         print(f"[increase_saturation] Fallback factor={safe_factor:.3f}")
     return adjusted
 
-def decrease_saturation(image, min_factor=0.45, max_factor=0.9, max_attempts=5, testing=False):
-    target_min= 5 / (1 - 0.7)
+def decrease_saturation(image, min_factor=0.5, max_factor=0.95, max_attempts=5, testing=False):
+    target_min= 7 / (1 - 0.7)
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV).astype(np.float32)
     current = get_saturation_level(image)
     for _ in range(max_attempts):
@@ -232,7 +216,7 @@ def decrease_saturation(image, min_factor=0.45, max_factor=0.9, max_attempts=5, 
 
 def apply_color_temperature(image, testing=False):
     # Warm effect with random factor up to 0.4
-    warm_factor = random.uniform(0.12, 0.42)
+    warm_factor = random.uniform(0.075, 0.42)
     if testing:
         # warm_factor = 0.5
         warm_factor = 0.12
@@ -272,15 +256,15 @@ def strong_color_shift(image, path, testing=False):
 
     # Define channel multipliers
     if dominant == 'blue':
-        r_scale = random.uniform(0.57, 0.75)
-        g_scale = random.uniform(1.125, 1.25)
-        b_scale = random.uniform(1.25, 1.6)
+        r_scale = random.uniform(0.57, 0.9)
+        g_scale = random.uniform(1.1, 1.25)
+        b_scale = random.uniform(1.1, 1.6)
         if testing:
             r_scale = 0.57
             g_scale = 1.125
             b_scale = 1.6
     elif dominant == 'red':
-        r_scale = random.uniform(1.15, 1.3)
+        r_scale = random.uniform(1.1, 1.3)
         g_scale = random.uniform(0.75, 1.0)
         b_scale = random.uniform(0.75, 1.0)
         if testing:
@@ -297,7 +281,7 @@ def strong_color_shift(image, path, testing=False):
             b_scale = 1.3
     elif dominant == 'green':
         r_scale = random.uniform(0.75, 1.0)
-        g_scale = random.uniform(1.125, 1.3)
+        g_scale = random.uniform(1.1, 1.3)
         b_scale = random.uniform(0.75, 1.0)
         if testing:
             r_scale = 0.8

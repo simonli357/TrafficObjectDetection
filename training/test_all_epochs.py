@@ -7,7 +7,6 @@ from pathlib import Path
 repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 # --- CONFIGURATION ---
-model_dir = os.path.join(repo_path, "training", "runs", "core0416c15", "weights")
 yaml_path = os.path.join(repo_path, "config", "train_config.yaml")
 
 device = 0  # or 'cuda:0'
@@ -15,6 +14,9 @@ device = 0  # or 'cuda:0'
 with open(yaml_path, 'r') as f:
     config = yaml.safe_load(f)
 class_names = config['names']
+NAME = config['name']
+num_epochs = config['num_epochs']
+model_dir = os.path.join(repo_path, "training", "runs", NAME+str(num_epochs), "weights")
 num_classes = len(class_names)
 # test: /home/slsecret/Downloads/bfmc_data/TestSetAll/
 # get the last part of the path

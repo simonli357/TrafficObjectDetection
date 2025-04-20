@@ -5,16 +5,17 @@ import shutil
 from pathlib import Path
 
 repo_path = Path(__file__).resolve().parent.parent
-NAME = 'core0418e'
-num_epochs = 15
+NAME = 'core0420b'
+num_epochs = 20
 results_dir = os.path.join(repo_path, 'training', 'runs')
 augment_path = os.path.join(repo_path, 'config/augment_config_default.yaml')
 model_path = os.path.join(repo_path, 'training', 'models', 'yolov8n.pt')
 data={
-    'train': os.path.join(repo_path, 'bfmc_data/generated/datasets_0416'),
+    'train': os.path.join(repo_path, 'bfmc_data/generated/datasets_0420'),
     'val': os.path.join(repo_path, 'bfmc_data/generated/testsets/TestSetAll'),
     'test': os.path.join(repo_path, 'bfmc_data/generated/testsets/TestSetAll'),
     'num_epochs': num_epochs,
+    'name': NAME,
     'names': {
         0: 'oneway',
         1: 'highwayentrance',

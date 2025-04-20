@@ -6,7 +6,7 @@ from pathlib import Path
 
 repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-MODEL = "core_nocity12"
+MODEL = "lynn"
 model_path = os.path.join(repo_path, "training", "models", MODEL+".pt")
 
 yaml_path = os.path.join(repo_path, "config" , "train_config.yaml")

@@ -12,30 +12,36 @@ random.seed(357)
 def identity(image, *args, **kwargs):
     return image
 normal_augmentations = [
-    [apply_motion_blur, apply_pixelation],
-    [increase_brightness, decrease_brightness, increase_contrast, decrease_contrast],
-    [increase_saturation, decrease_saturation, apply_color_temperature, strong_color_shift],
-    [apply_defocus_blur, apply_sun, apply_rain, identity],
+    [apply_pixelation, apply_defocus_blur],
+    [increase_brightness, decrease_brightness, apply_sun, apply_rain],
+    [increase_contrast, decrease_contrast, identity],
+    [increase_saturation, decrease_saturation, identity],
+    [apply_color_temperature, strong_color_shift, apply_motion_blur],
     [rotate, perspective_warp],
 ]
 light_augmentations = [
-    [apply_motion_blur, apply_pixelation],
-    [increase_brightness, decrease_brightness, increase_contrast, decrease_contrast],
-    [increase_saturation, decrease_saturation, apply_rain, identity],
-    [apply_defocus_blur, rotate, apply_sun, identity],
+    [apply_motion_blur],
+    [apply_defocus_blur],
+    [apply_pixelation],
+    [increase_brightness, decrease_brightness],
+    [increase_contrast, decrease_contrast],
+    [increase_saturation, decrease_saturation],
 ]
 girl_augmentations = [
-    [apply_motion_blur, apply_pixelation],
-    [increase_brightness, decrease_brightness, increase_contrast, decrease_contrast],
-    [increase_saturation, decrease_saturation, apply_color_temperature],
-    [apply_defocus_blur, apply_sun, apply_rain, identity],
-    [rotate],
+    [apply_motion_blur],
+    [apply_defocus_blur],
+    [apply_pixelation],
+    [increase_brightness, decrease_brightness],
+    [increase_contrast, decrease_contrast],
+    [increase_saturation, decrease_saturation],
 ]
 car_augmentations = [
-    [apply_motion_blur, apply_pixelation],
-    [increase_brightness, decrease_brightness, increase_contrast, decrease_contrast],
-    [increase_saturation, decrease_saturation, apply_color_temperature],
-    [apply_defocus_blur, apply_sun, apply_rain, identity],
+    [apply_motion_blur],
+    [apply_defocus_blur],
+    [apply_pixelation],
+    [increase_brightness, decrease_brightness],
+    [increase_contrast, decrease_contrast],
+    [increase_saturation, decrease_saturation],
 ]
 
 CLASS_NAMES = ["oneway", "highwayentrance", "stopsign", "roundabout", "park",
@@ -63,46 +69,22 @@ def process_single_image(args):
     path = os.path.join(directory, filename)
     image = cv2.imread(path)
     if image is None:
-        return 0  # No flips if image is missing
+        return
 
-    name, ext = os.path.splitext(filename)
-    flip_count = 0
-    def maybe_flip(img):
-        flipped = False
+    for i in range(multiplier):
+        transformed = image.copy()
         if random.random() < can_flip:
-            img = flip_lr(img)
-            flipped = True
-        return img, flipped
-
-    # Save original
-    if random.random() < can_flip:
-        image = flip_lr(image)
-        flip_count += 1
-    original_save_path = os.path.join(output_dir, f"{name}_aug0{ext}")
-    cv2.imwrite(original_save_path, image)
-
-    image, flipped = maybe_flip(image)
-    if flipped:
-        flip_count += 1
-    cv2.imwrite(original_save_path, image)
-
-    for i in range(1, multiplier):
-        transformed, flipped = maybe_flip(image.copy())
-        if flipped:
-            flip_count += 1
+            transformed = flip_lr(transformed)
 
         chosen_groups = random.sample(range(len(augmentations)), num_augments)
         for group in chosen_groups:
-            temp, flipped = maybe_flip(transformed)
-            if flipped:
-                flip_count += 1
-            transformed = temp
+            if random.random() < can_flip:
+                transformed = flip_lr(transformed)
             transformed = apply_random_from_group(transformed, group, augmentations, image_path=path)
 
-        new_fname = f"{name}_aug{i}{ext}"
+        name, ext = os.path.splitext(filename)
+        new_fname = f"{name}_aug{i+1}{ext}"
         cv2.imwrite(os.path.join(output_dir, new_fname), transformed)
-
-    return flip_count
 
 def apply_transformations_to_directory(directory, output_dir, multiplier, can_flip, num_augments, augmentations):
     image_files = [f for f in os.listdir(directory)
@@ -111,16 +93,10 @@ def apply_transformations_to_directory(directory, output_dir, multiplier, can_fl
     tasks = [(fname, directory, output_dir, multiplier, can_flip, num_augments, augmentations)
              for fname in image_files]
 
-    total_images = len(image_files) * multiplier
-    total_flips = 0
-
     with Pool(processes=cpu_count()-1) as pool:
-        for flip_result in tqdm(pool.imap_unordered(process_single_image, tasks),
-                                total=len(tasks), desc="Augmenting Images"):
-            total_flips += flip_result
-
-    flip_percent = (total_flips / total_images) * 100 if total_images > 0 else 0
-    print(f"\n→ Flip percentage: {flip_percent:.2f}% ({total_flips}/{total_images})")
+        for _ in tqdm(pool.imap_unordered(process_single_image, tasks),
+                      total=len(tasks), desc="Augmenting Images"):
+            pass
 
 if __name__ == "__main__":
     num_augments = 2

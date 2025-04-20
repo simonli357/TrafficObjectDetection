@@ -15,7 +15,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Starting Rainbow DQN script..."
-python3 /home/slsecret/COMP579/project/src/rainbow_dqn/rainbow_dqn_color.py
+python3 /home/slsecret/COMP579/project/src/rainbow_dqn/rainbow_dqn2.py
 if [ $? -ne 0 ]; then
     echo "Rainbow DQN script failed. Exiting."
     exit 1

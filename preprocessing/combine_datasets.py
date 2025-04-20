@@ -10,17 +10,17 @@ repo_path = Path(__file__).resolve().parent.parent
 
 datasets = [
     'datasets_city', 
-    # 'datasets_a', 
-    'datasets_a0416c', 
+    'datasets_a', 
+    'datasets_c',
+    # 'datasets_a0416c', 
+    # 'datasets_c0416c',
     'datasets_bb', 
-    # 'datasets_c',
-    'datasets_c0416c',
     'datasets_e', 
     'datasets_g', 
     'datasets_john', 
     'datasets_s',
 ]
-output_name = 'datasets_0416c'
+output_name = 'datasets_0420'
 
 root_dir = repo_path / 'bfmc_data' / 'base' / 'datasets'
 output_dir = repo_path / 'bfmc_data' / 'generated' / output_name

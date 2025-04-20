@@ -32,8 +32,7 @@ pip install -r requirements.txt
 
 2. **Download the dataset**
 
-   Download the bfmc_data.zip from this Google Drive link:  
-   *(available soon)*
+   Download the bfmc_data.zip from this Google Drive link: [*click here*](https://drive.google.com/drive/folders/1Kbdevfdew5SdMcJx_BIfucsfIzDX3c9K)
 
 3. **Unzip and create a symbolic link to the dataset**
 

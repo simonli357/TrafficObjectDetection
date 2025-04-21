@@ -59,7 +59,7 @@ def process_class(id, repo_path):
                    "crosswalk","noentry","highwayexit","prio","light",
                    "roadblock","girl","cars2"]
     CLASS_MEANS = [40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
-               300, 150, 35]
+               100, 120, 35]
     CLASS_STDS = [40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
                 40, 40, 40]
     CLASS_MIN_WIDTHS = [12, 12, 12, 12, 12, 12, 12, 12, 12, 16,

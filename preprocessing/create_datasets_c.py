@@ -193,7 +193,7 @@ if __name__ == "__main__":
         futures = [executor.submit(generate_synthetic_image, i) for i in range(TOTAL_SYNTHETIC_IMAGES)]
         for future in as_completed(futures):
             i = future.result()
-            if i % 100 == 0:
+            if i % 1000 == 0:
                 print(f"Completed {i} images...")
 
     print("✅ Done. Class usage summary:")

@@ -13,6 +13,7 @@ with open(yaml_path, 'r') as f:
     config = yaml.safe_load(f)
 class_names = config['names']
 NAME = config['name']
+# NAME = 'core0420'
 num_epochs = config['num_epochs']
 num_classes = len(class_names)
 weights_dir = repo_path / "training" / "runs" / (NAME+str(num_epochs)) / "weights"

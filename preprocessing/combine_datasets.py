@@ -20,7 +20,7 @@ datasets = [
     'datasets_john', 
     'datasets_s',
 ]
-output_name = 'datasets_0420'
+output_name = 'datasets_0421'
 
 root_dir = repo_path / 'bfmc_data' / 'base' / 'datasets'
 output_dir = repo_path / 'bfmc_data' / 'generated' / output_name

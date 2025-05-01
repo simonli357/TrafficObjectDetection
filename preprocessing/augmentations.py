@@ -435,21 +435,22 @@ if __name__ == "__main__":
         # os.path.join(repo_path, "bfmc_data", "base", "crop", "crosswalk", "20.JPG"), # default
         # os.path.join(repo_path, "bfmc_data", "base", "crop", "crosswalk", "frame_669_5_535_80.jpg"), #normal
         # os.path.join(repo_path, "bfmc_data", "base", "crop", "crosswalk", "44.jpg"), #normal
+        os.path.join(repo_path, "bfmc_data", "base", "crop", "crosswalk", "167.jpg"), #big
         
         # all signs
-        os.path.join(repo_path, "bfmc_data", "base", "crop", "crosswalk", "44.jpg"), #normal
-        os.path.join(repo_path, "bfmc_data", "base", "crop", "crosswalk", "frame_669_5_535_80.jpg"), #normal
-        os.path.join(repo_path, "bfmc_data", "base", "crop", "highwayentrance", "frame_123_1_150_86.jpg"), #normal
-        os.path.join(repo_path, "bfmc_data", "base", "crop", "highwayentrance", "frame_1743441347_1_148_54.jpg"), #normal
-        os.path.join(repo_path, "bfmc_data", "base", "crop", "highwayexit", "frame_618_7_403_41.jpg"), #normal
-        os.path.join(repo_path, "bfmc_data", "base", "crop", "noentry", "frame_635_6_68_270.jpg"), #normal
-        os.path.join(repo_path, "bfmc_data", "base", "crop", "noentry", "frame_1743441347_6_0_237.jpg"), #normal
-        os.path.join(repo_path, "bfmc_data", "base", "crop", "prio", "frame_663_8_531_191.jpg"), #normal
-        os.path.join(repo_path, "bfmc_data", "base", "crop", "prio", "234.jpg"), #normal
-        os.path.join(repo_path, "bfmc_data", "base", "crop", "stopsign", "217.jpg"), #normal
-        os.path.join(repo_path, "bfmc_data", "base", "crop", "stopsign", "frame_619_2_233_144.jpg"), #normal
-        os.path.join(repo_path, "bfmc_data", "base", "crop", "stopsign", "frame_713_2_558_87.jpg"), #normal
-        os.path.join(repo_path, "bfmc_data", "base", "crop", "stopsign", "282.jpg"), #normal
+        # os.path.join(repo_path, "bfmc_data", "base", "crop", "crosswalk", "44.jpg"), #normal
+        # os.path.join(repo_path, "bfmc_data", "base", "crop", "crosswalk", "frame_669_5_535_80.jpg"), #normal
+        # os.path.join(repo_path, "bfmc_data", "base", "crop", "highwayentrance", "frame_123_1_150_86.jpg"), #normal
+        # os.path.join(repo_path, "bfmc_data", "base", "crop", "highwayentrance", "frame_1743441347_1_148_54.jpg"), #normal
+        # os.path.join(repo_path, "bfmc_data", "base", "crop", "highwayexit", "frame_618_7_403_41.jpg"), #normal
+        # os.path.join(repo_path, "bfmc_data", "base", "crop", "noentry", "frame_635_6_68_270.jpg"), #normal
+        # os.path.join(repo_path, "bfmc_data", "base", "crop", "noentry", "frame_1743441347_6_0_237.jpg"), #normal
+        # os.path.join(repo_path, "bfmc_data", "base", "crop", "prio", "frame_663_8_531_191.jpg"), #normal
+        # os.path.join(repo_path, "bfmc_data", "base", "crop", "prio", "234.jpg"), #normal
+        # os.path.join(repo_path, "bfmc_data", "base", "crop", "stopsign", "217.jpg"), #normal
+        # os.path.join(repo_path, "bfmc_data", "base", "crop", "stopsign", "frame_619_2_233_144.jpg"), #normal
+        # os.path.join(repo_path, "bfmc_data", "base", "crop", "stopsign", "frame_713_2_558_87.jpg"), #normal
+        # os.path.join(repo_path, "bfmc_data", "base", "crop", "stopsign", "282.jpg"), #normal
         
     ]
     # for image_path in image_paths:
@@ -459,27 +460,27 @@ if __name__ == "__main__":
         cv2.imshow('Original' + str(i), image)
         
         #size dependent
-        # cv2.imshow(f'Motion Blur {i}', apply_motion_blur(image.copy(), testing=True))
-        # cv2.imshow(f'Pixelated {i}', apply_pixelation(image.copy(), testing=True))
-        # cv2.imshow(f'Defocus Blur {i}', apply_defocus_blur(image.copy(), testing=True))
-        # cv2.imshow(f'Sun {i}', apply_sun(image.copy()))
+        cv2.imshow(f'Motion Blur {i}', apply_motion_blur(image.copy(), testing=True))
+        cv2.imshow(f'Pixelated {i}', apply_pixelation(image.copy(), testing=True))
+        cv2.imshow(f'Defocus Blur {i}', apply_defocus_blur(image.copy(), testing=True))
+        cv2.imshow(f'Sun {i}', apply_sun(image.copy()))
         
         #color dependent
-        # cv2.imshow(f'Brightness increased {i}', increase_brightness(image.copy(), testing=True))
-        # cv2.imshow(f'Brightness decreased {i}', decrease_brightness(image.copy(), testing=True))
-        # cv2.imshow(f'Contrast Increased {i}', increase_contrast(image.copy()))
-        # cv2.imshow(f'Contrast Decreased {i}', decrease_contrast(image.copy()))
-        # cv2.imshow(f'Saturation Increased {i}', increase_saturation(image.copy(), testing=True))
-        # cv2.imshow(f'Saturation Decreased {i}', decrease_saturation(image.copy(), testing=True))
-        # cv2.imshow(f'Color Temperature {i}', apply_color_temperature(image.copy(), testing=True))
+        cv2.imshow(f'Brightness increased {i}', increase_brightness(image.copy(), testing=True))
+        cv2.imshow(f'Brightness decreased {i}', decrease_brightness(image.copy(), testing=True))
+        cv2.imshow(f'Contrast Increased {i}', increase_contrast(image.copy()))
+        cv2.imshow(f'Contrast Decreased {i}', decrease_contrast(image.copy()))
+        cv2.imshow(f'Saturation Increased {i}', increase_saturation(image.copy(), testing=True))
+        cv2.imshow(f'Saturation Decreased {i}', decrease_saturation(image.copy(), testing=True))
+        cv2.imshow(f'Color Temperature {i}', apply_color_temperature(image.copy(), testing=True))
         cv2.imshow(f'Strong Color Shift {i}', strong_color_shift(image.copy(), image_path, testing=True))
-        # cv2.imshow(f'Rain {i}', apply_rain(image.copy()))
+        cv2.imshow(f'Rain {i}', apply_rain(image.copy()))
         
         # doesnt matter
-        # cv2.imshow(f'Flip LR {i}', flip_lr(image.copy()))
-        # cv2.imshow(f'Rotated {i}', rotate(image.copy()))
-        # cv2.imshow(f'Perspective Warp {i}', perspective_warp(image.copy()))
-        # cv2.imshow(f'Obstruction {i}', random_obstruction(image.copy(), testing=True))
+        cv2.imshow(f'Flip LR {i}', flip_lr(image.copy()))
+        cv2.imshow(f'Rotated {i}', rotate(image.copy()))
+        cv2.imshow(f'Perspective Warp {i}', perspective_warp(image.copy()))
+        cv2.imshow(f'Obstruction {i}', random_obstruction(image.copy(), testing=True))
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()

@@ -98,8 +98,9 @@ def show_images(images, start_index):
             return 0
 
 base_path = os.path.join(repo_path, "bfmc_data", "base", "datasets", "datasets_c")
+base_path = os.path.join(repo_path, "bfmc_data", "generated", "testsets", "TestSetAll")
 image_folder = os.path.join(base_path, "images")
-label_folder = os.path.join(base_path, "labels")
+label_folder = os.path.join(base_path, "labels2")
 
 print("image_folder: ", image_folder)
 

@@ -10,6 +10,7 @@ repo_path = Path(__file__).resolve().parent.parent
 
 datasets = [
     'datasets_city_padded', 
+    'datasets_city_padded_flipped', 
     'datasets_a', 
     'datasets_c',
     # 'datasets_a0416c', 

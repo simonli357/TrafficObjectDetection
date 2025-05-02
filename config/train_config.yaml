@@ -1,4 +1,4 @@
-name: core0421
+name: core0501
 names:
   0: oneway
   1: highwayentrance
@@ -15,5 +15,5 @@ names:
   12: car
 num_epochs: 30
 test: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/testsets/TestSetAll
-train: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/datasets_0421
+train: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/datasets_0501
 val: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/testsets/TestSetAll

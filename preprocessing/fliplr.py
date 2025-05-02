@@ -1,12 +1,13 @@
 import os
 import cv2
 from pathlib import Path
+from tqdm import tqdm
 
-repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-
+repo_path = Path(__file__).resolve().parent.parent
 # Input folders
 root = repo_path / "bfmc_data" / "base" / "testsets"
-name = "rf2024"
+root = repo_path / "bfmc_data" / "base" / "datasets"
+name = "datasets_city_padded"
 image_dir = os.path.join(root, name, "images")
 label_dir = os.path.join(root, name, "labels")
 
@@ -21,7 +22,8 @@ image_files = [f for f in os.listdir(image_dir) if f.lower().endswith(('.png', '
 
 skip_count = 0
 skip_empty_label_count = 0
-for img_file in image_files:
+# for img_file in image_files:
+for img_file in tqdm(image_files, desc="Processing images", unit="file"):
     img_path = os.path.join(image_dir, img_file)
     base_name, ext = os.path.splitext(img_file)
     label_file = base_name + ".txt"

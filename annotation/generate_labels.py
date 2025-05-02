@@ -5,11 +5,11 @@ import tqdm
 
 repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-MODEL_PATH = os.path.join(repo_path, 'training', 'models', 'xenia.pt')
-name = 'bfmc2020'
-root = os.path.join(repo_path, 'bfmc_data', 'base', 'unprocessed')
+MODEL_PATH = os.path.join(repo_path, 'training', 'models', 'rebecca.pt')
+name = 'TestSetAll'
+root = os.path.join(repo_path, 'bfmc_data', 'generated', 'testsets')
 INPUT_DIR = os.path.join(root, name, 'images')
-OUTPUT_LABEL_DIR = os.path.join(root, name, 'labels')
+OUTPUT_LABEL_DIR = os.path.join(root, name, 'labels2')
 CONF_THRESHOLD = 0.25  # Confidence threshold for filtering detections
 
 # Create output label directory if it doesn't exist

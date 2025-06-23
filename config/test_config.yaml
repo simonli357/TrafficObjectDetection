@@ -1,15 +1,17 @@
-output_name: TestSet2024
+output_name: TestSet0616
 output_base_dir: /home/slsecret/Downloads/bfmc_data/TestSetData
 datasets:
-  - rf2024
-  - rf2024a
-  - rf2024b
-  - rf2024c
-  - vroom
-  # - car_test_padded
-  # - frames_sim0407
-  # - lab
+  # - rf2024
+  # - rf2024a
+  # - rf2024b
+  # - rf2024c
+  # - vroom
   # - rf0309b
-  # - team2021
-  # - xinya
+  - car_test_padded
+  - frames_sim0407
+  - lab
+  - team2021
+  - xinya
+  - bfmc2020
+  - bfmc2021
 

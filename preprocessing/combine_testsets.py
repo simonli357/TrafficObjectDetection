@@ -6,19 +6,21 @@ from pathlib import Path
 repo_path = Path(__file__).resolve().parent.parent
 
 testsets = [
-    'rf2024',
-    'rf2024a',
-    'rf2024b',
-    'rf2024c',
-    'vroom',
+    # 'rf2024',
+    # 'rf2024a',
+    # 'rf2024b',
+    # 'rf2024c',
+    # 'vroom',
+    # 'rf0309b',
     'car_test_padded',
     'frames_sim0407',
     'lab',
-    'rf0309b',
     'team2021',
     'xinya',
+    'bfmc2020',
+    'bfmc2021'
 ]
-output_name = 'TestSetAll'
+output_name = 'TestSet0616'
 def combine_testsets():
     output_base_dir = repo_path / 'bfmc_data' / 'generated' / 'testsets'
     input_base_dir = repo_path / 'bfmc_data' / 'base' / 'testsets'

@@ -20,8 +20,15 @@ datasets = [
     'datasets_g', 
     'datasets_john', 
     'datasets_s',
+
+    'rf2024',
+    'rf2024a',
+    'rf2024b',
+    'rf2024c',
+    'vroom',
+    'rf0309b'
 ]
-output_name = 'datasets_0501'
+output_name = 'datasets_0616'
 
 root_dir = repo_path / 'bfmc_data' / 'base' / 'datasets'
 output_dir = repo_path / 'bfmc_data' / 'generated' / output_name

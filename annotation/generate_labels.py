@@ -5,7 +5,7 @@ import tqdm
 
 repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-MODEL_PATH = os.path.join(repo_path, 'training', 'models', 'rebecca.pt')
+MODEL_PATH = os.path.join(repo_path, 'training', 'models', 'brooke.pt')
 name = 'TestSetAll'
 root = os.path.join(repo_path, 'bfmc_data', 'generated', 'testsets')
 INPUT_DIR = os.path.join(root, name, 'images')

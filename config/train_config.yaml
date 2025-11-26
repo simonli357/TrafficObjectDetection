@@ -1,4 +1,5 @@
-name: core0616
+name: linxinya
+# name: core0616
 names:
   0: oneway
   1: highwayentrance
@@ -14,6 +15,6 @@ names:
   11: girl
   12: car
 num_epochs: 30
-test: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/testsets/TestSet0616_filtered
-train: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/datasets_0616
-val: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/testsets/TestSet0616_filtered
+test: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/testsets/TestSetAll_filtered
+train: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/datasets_final
+val: /home/slsecret/TrafficObjectDetection/bfmc_data/generated/testsets/TestSetAll_filtered

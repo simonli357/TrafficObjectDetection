@@ -26,9 +26,12 @@ datasets = [
     'rf2024b',
     'rf2024c',
     'vroom',
-    'rf0309b'
+    'rf0309b',
+    'bfmc2025',
+    'bfmc2025_flipped',
+    'lego_car'
 ]
-output_name = 'datasets_0616'
+output_name = 'datasets_final'
 
 root_dir = repo_path / 'bfmc_data' / 'base' / 'datasets'
 output_dir = repo_path / 'bfmc_data' / 'generated' / output_name

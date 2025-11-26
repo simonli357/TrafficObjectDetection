@@ -5,9 +5,9 @@ import shutil
 from pathlib import Path
 
 repo_path = Path(__file__).resolve().parent.parent
-NAME = 'core0616'
+NAME = 'linxinya'
 num_epochs = 30
-DATASET_NAME = 'datasets_0616'
+DATASET_NAME = 'datasets_final'
 results_dir = os.path.join(repo_path, 'training', 'runs')
 augment_path = os.path.join(repo_path, 'config/augment_config_default.yaml')
 model_path = os.path.join(repo_path, 'training', 'models', 'yolov8n.pt')

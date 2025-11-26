@@ -7,7 +7,7 @@ repo_path = Path(__file__).resolve().parent.parent
 # Input folders
 root = repo_path / "bfmc_data" / "base" / "testsets"
 root = repo_path / "bfmc_data" / "base" / "datasets"
-name = "datasets_city_padded"
+name = "bfmc2025"
 image_dir = os.path.join(root, name, "images")
 label_dir = os.path.join(root, name, "labels")
 

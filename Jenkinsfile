@@ -13,7 +13,7 @@ pipeline {
                 // Jenkins has already cloned your repo into the workspace!
                 // We just need to verify the file is there and run it.
                 sh 'ls -la' 
-                sh 'python process_data.py'
+                sh 'python test.py'
             }
         }
     }
